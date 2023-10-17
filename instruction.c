@@ -1,5 +1,12 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "reservation_station.h"
+
+
+typedef struct instruction_queue {
+    instruction* instructions;
+    int tam;
+} instruction_queue;
 
 typedef struct register_ {
     char name[2];
@@ -11,47 +18,61 @@ typedef struct {
     register_* rs;
     register_* rt;
     register_* rd;
+    reservation_station* pending;
 
-} instruction_r;
+} instruction;
+
+
+void issue() {
+
+}
+
+void execute(instruction* instruction, stations_table* stations_table) {
+    
+}
+
+void write_result() {
+
+}
 
 void load() {
 
 }
 
-void add(instruction_r* i) {
-    if(i == NULL) {
+void add(instruction* instruction) {
+    if(instruction == NULL) {
         printf("Null instruction");
         return;
     }
 
-    i->rs->value = i->rt->value + i->rd->value;
+    instruction->rs->value = instruction->rt->value + instruction->rd->value;
 }
 
-void sub(instruction_r* i) {
-    if(i == NULL) {
+void sub(instruction* instruction) {
+    if(instruction == NULL) {
         printf("Null instruction");
         return;
     }
 
-    i->rs->value = i->rt->value - i->rd->value;
+    instruction->rs->value = instruction->rt->value - instruction->rd->value;
 }
 
-void mult(instruction_r* i) {
-    if(i == NULL) {
+void mult(instruction* instruction) {
+    if(instruction == NULL) {
         printf("Null instruction");
         return;
     }
 
-    i->rs->value = i->rt->value * i->rd->value;
+    instruction->rs->value = instruction->rt->value * instruction->rd->value;
 }
 
-void div(instruction_r* i) {
-    if(i == NULL) {
+void div(instruction* instruction) {
+    if(instruction == NULL) {
         printf("Null instruction");
         return;
     }
 
-    i->rs->value = i->rt->value / i->rd->value;
+    instruction->rs->value = instruction->rt->value / instruction->rd->value;
 }
 
 

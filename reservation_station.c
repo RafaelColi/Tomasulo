@@ -3,6 +3,16 @@
 #include <string.h>
 
 typedef struct {
+    char busy;
+    char* address;
+} load_buffer;
+
+typedef struct {
+    load_buffer* buffers;
+    int tam;
+} buffers_table;
+
+typedef struct {
     int time;
     char name;
     char busy;
