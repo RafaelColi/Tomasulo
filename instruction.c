@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include "reservation_station.h"
 
-
 typedef struct instruction_queue {
     instruction* instructions;
     int tam;

@@ -1,33 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
-
-typedef struct {
-    char busy;
-    char* address;
-} load_buffer;
-
-typedef struct {
-    load_buffer* buffers;
-    int tam;
-} buffers_table;
-
-typedef struct {
-    int time;
-    char name;
-    char busy;
-    char* op;
-    char* vj;
-    char* vk;
-    char* qj;
-    char* qk;
-
-} reservation_station;
-
-typedef struct {
-    reservation_station* stations;
-    int tam;
-} stations_table;
+#include "reservation_station.h"
 
 stations_table* create_stations_table(int add, int mult) {
     int tam = add + mult;
