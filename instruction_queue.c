@@ -25,10 +25,14 @@ void add_instruction_into_queue(instruction* instruction, instruction_queue* ins
     return;
 }
 
-instruction* remove_instruction_from_queue(instruction_queue* instruction_queue) {
+instruction* instruction_queue_front(instruction_queue* instruction_queue) {
+    return instruction_queue->instructions[0];
+}
+
+void remove_instruction_from_queue(instruction_queue* instruction_queue) {
     if(instruction_queue_is_empty(instruction_queue)) {
         printf("Queue is empty\n");
-        return NULL;
+        return;
     }
 
     instruction* removed = instruction_queue->instructions[0];
@@ -39,7 +43,7 @@ instruction* remove_instruction_from_queue(instruction_queue* instruction_queue)
 
     instruction_queue->size--;
 
-    return removed;
+    return;
 }
 
 int instruction_queue_is_full(instruction_queue* instruction_queue) {

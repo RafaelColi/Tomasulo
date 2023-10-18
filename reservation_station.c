@@ -18,6 +18,15 @@ void add_instruction_to_reservation_station(reservation_station* reservation_sta
     reservation_station->busy = 'y';
     reservation_station->op = instruction;
     
+    if(instruction->opcode == "add" || instruction->opcode == "sub") {
+        reservation_station->time = 2;
+    } else if(instruction->opcode == "mult") {
+        reservation_station->time = 10;
+    } else if(instruction->opcode == "div") {
+        reservation_station->time = 40;
+    }
+
+
     if(instruction->rs->fu == NULL) {
         instruction->rs->fu = reservation_station;
     }
@@ -35,4 +44,16 @@ void add_instruction_to_reservation_station(reservation_station* reservation_sta
     }
 
     return;
+}
+
+void refresh_reservation_station(reservation_station* reservation_station) {
+    if(reservation_station->qj->fu == NULL) {
+        reservation_station->vj = reservation_station->qj;
+        reservation_station->qj = NULL;
+    }
+
+    if(reservation_station->qk->fu == NULL) {
+        reservation_station->vk = reservation_station->qk;
+        reservation_station->qk = NULL;
+    }
 }
