@@ -2,39 +2,19 @@
 #include <stdio.h>
 #include "reservation_station.h"
 
-stations_table* create_stations_table(int add, int mult) {
-    int tam = add + mult;
+reservation_station* create_reservation_station(char* name) {
+    reservation_station* new = (reservation_station*) calloc(1, sizeof(reservation_station));
 
-    stations_table* st = (stations_table*) calloc(1, sizeof(reservation_station));
+    if(new != NULL) {
+        new->name = name;
 
-    if(st == NULL) {
-        printf("Failed to create stations table");
-        return st;
+        new->busy = 'n';
+        new->op = (char*) calloc(6, sizeof(char));
+        new->vj = (char*) calloc(6, sizeof(char));
+        new->vk = (char*) calloc(6, sizeof(char));
+        new->qj = (char*) calloc(6, sizeof(char));
+        new->qk = (char*) calloc(6, sizeof(char));
     }
 
-    st->tam = tam;
-    st->stations = (reservation_station*) calloc(tam, sizeof(reservation_station));
-
-    if(st == NULL) {
-        printf("Failed to create array of reservation stations\n");
-        return st;
-    } 
-
-    for(int i = 0; i < tam; i++) {
-        if(add > 0) {
-            st->stations[i].name = 'a';
-            add--;
-        } else {
-            st->stations[i].name = 'm';
-        }
-
-        st->stations[i].busy = 'n';
-        st->stations[i].op = (char*) calloc(6, sizeof(char));
-        st->stations[i].vj = (char*) calloc(6, sizeof(char));
-        st->stations[i].vk = (char*) calloc(6, sizeof(char));
-        st->stations[i].qj = (char*) calloc(6, sizeof(char));
-        st->stations[i].qk = (char*) calloc(6, sizeof(char));
-    }
-
-    return st;
+    return new;
 }
