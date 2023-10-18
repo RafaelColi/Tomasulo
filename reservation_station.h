@@ -1,16 +1,18 @@
 #ifndef RESERVATION_STATION.H
 #define RESERVATION_STATION.H
+#include "instruction.h"
 #include "functional_unit.h"
+#include "register.h"
 
 typedef struct reservation_station {
     int time;
     char* name;
     char busy;
-    char* op;
-    char* vj;
-    char* vk;
-    char* qj;
-    char* qk;
+    instruction* op;
+    register_* vj;
+    register_* vk;
+    register_* qj;
+    register_* qk;
 
 } reservation_station;
 

@@ -2,9 +2,16 @@
 #define REGISTER.H
 
 typedef struct register_ {
-    char name[2];
     double value;
-    f_u* fu;
+    reservation_station* fu;
 } register_;
+
+typedef struct register_pool {
+    register_** registers;
+    int size;
+    int cap;
+} register_pool;
+
+register_pool* create_register_pool(int size);
 
 #endif

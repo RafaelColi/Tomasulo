@@ -9,12 +9,30 @@ reservation_station* create_reservation_station(char* name) {
         new->name = name;
 
         new->busy = 'n';
-        new->op = (char*) calloc(6, sizeof(char));
-        new->vj = (char*) calloc(6, sizeof(char));
-        new->vk = (char*) calloc(6, sizeof(char));
-        new->qj = (char*) calloc(6, sizeof(char));
-        new->qk = (char*) calloc(6, sizeof(char));
     }
 
     return new;
+}
+
+void add_instruction_to_reservation_station(reservation_station* reservation_station, instruction* instruction) {
+    reservation_station->busy = 'y';
+    reservation_station->op = instruction;
+    
+    if(instruction->rs->fu == NULL) {
+        instruction->rs->fu = reservation_station;
+    }
+
+    if(instruction->rt->fu == NULL) {
+        reservation_station->vj = instruction->rt;
+    } else {
+        reservation_station->qj = instruction->rt;
+    }
+
+    if(instruction->rd->fu == NULL) {
+        reservation_station->vk = instruction->rd;
+    } else {
+        reservation_station->qk = instruction->rd;
+    }
+
+    return;
 }

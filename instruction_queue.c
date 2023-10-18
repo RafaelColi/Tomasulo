@@ -13,9 +13,9 @@ instruction_queue* create_instruction_queue(int num) {
     return new;
 }
 
-void add_instruction(instruction* instruction, instruction_queue* instruction_queue) {
+void add_instruction_into_queue(instruction* instruction, instruction_queue* instruction_queue) {
     if(instruction_queue_is_full(instruction_queue)) {
-       printf("Queue is full");
+       printf("Queue is full\n");
        return; 
     }
 
@@ -27,7 +27,7 @@ void add_instruction(instruction* instruction, instruction_queue* instruction_qu
 
 instruction* remove_instruction_from_queue(instruction_queue* instruction_queue) {
     if(instruction_queue_is_empty(instruction_queue)) {
-        printf("Queue is empty");
+        printf("Queue is empty\n");
         return NULL;
     }
 
@@ -38,7 +38,7 @@ instruction* remove_instruction_from_queue(instruction_queue* instruction_queue)
     }
 
     instruction_queue->size--;
-    
+
     return removed;
 }
 

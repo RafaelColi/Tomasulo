@@ -8,7 +8,7 @@ stations_table* create_stations_table(int add, int mult) {
     stations_table* st = (stations_table*) calloc(1, sizeof(stations_table));
 
     if(st == NULL) {
-        printf("Failed to create stations table");
+        printf("Failed to create stations table\n");
         return st;
     }
 
@@ -30,4 +30,32 @@ stations_table* create_stations_table(int add, int mult) {
     }
 
     return st;
+}
+
+void add_reservation_station(stations_table* stations_table, reservation_station* reservation_station) {
+    if(stations_table_is_full(stations_table)) {
+        printf("Stations table is full\n");
+        return;
+    }
+
+    stations_table->stations[stations_table->size];
+    stations_table->size++;
+
+    return;
+}
+
+int stations_table_is_full(stations_table* stations_table) {
+    if(stations_table->size == stations_table->cap) {
+        return 1;
+    }
+
+    return 0;
+}
+
+int stations_table_is_empty(stations_table* stations_table) {
+    if(stations_table->size == 0) {
+        return 1;
+    }
+
+    return 0;
 }
