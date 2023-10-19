@@ -8,5 +8,16 @@ load_buffer* create_load_buffer() {
     if(new != NULL) {
         new->busy = 'n';
     }
+
+    return;
 }
 
+void add_instruction_to_load_buffer(load_buffer* load_buffer, instruction* instruction) {
+    load_buffer->address = instruction->rt;
+    load_buffer->busy = 'y';
+    load_buffer->time = 2;
+    
+    instruction->pending_buffer = load_buffer;
+
+    return;
+}

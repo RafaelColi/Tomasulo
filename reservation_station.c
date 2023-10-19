@@ -43,7 +43,7 @@ void add_instruction_to_reservation_station(reservation_station* reservation_sta
         reservation_station->qk = instruction->rd;
     }
 
-    instruction->pending = reservation_station;
+    instruction->pending_station = reservation_station;
 
     return;
 }

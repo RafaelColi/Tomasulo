@@ -8,7 +8,7 @@ typedef struct instruction_queue {
     int cap;
 } instruction_queue;
 
-instruction_queue* create_instruction_queue(int num);
+instruction_queue* create_instruction_queue(int size);
 
 void add_instruction_into_queue(instruction* instruction, instruction_queue* instruction_queue);
 

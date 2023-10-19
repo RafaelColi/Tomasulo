@@ -9,8 +9,18 @@
 #include "buffers_table.h"
 #include <string.h>
 
-void issue(instruction_queue* instruction_queue, stations_table* stations_table) {
+void issue(instruction_queue* instruction_queue, stations_table* stations_table, buffers_table* buffers_table) {
     instruction* instruction = instruction_queue_front(instruction_queue);
+
+    if(strcmp(instruction->opcode, "load")) {
+        for(int i = 0; i < buffers_table->size; i++) {
+            load_buffer* l_b = buffers_table->buffers[i];
+
+            if(l_b->busy == 'n') {
+                add_instruction_to_load_buffer(l_b, instruction);
+            }
+        }
+    }
 
     for(int i = 0; i < stations_table->size; i++) {
         reservation_station* r_s = stations_table->stations[i];
@@ -19,12 +29,24 @@ void issue(instruction_queue* instruction_queue, stations_table* stations_table)
         (strcmp(instruction->opcode, "mult") && strcmp(r_s->name, "mult")) || (strcmp(instruction->opcode, "div") && strcmp(r_s->name, "mult"))) {
             if(r_s->busy == 'n') {
                 add_instruction_to_reservation_station(r_s, instruction);
+                remove_instruction_from_queue(instruction_queue);
             }
         }
     }
 }
 
-void execute(instruction* instruction, stations_table* stations_table) {
+void execute(instruction* instruction, stations_table* stations_table, buffers_table* buffers_table) {
+    for(int i = 0; i < buffers_table->buffers; i++) {
+        load_buffer* l_b = buffers_table->buffers[i];
+
+        if(l_b->busy == 'y') {
+            if(l_b->time > 0) {
+                l_b->time--;
+            }
+        }
+    }
+
+    
     for(int i = 0; i < stations_table->size; i++) {
         reservation_station* r_s = stations_table->stations[i];
 
@@ -33,17 +55,17 @@ void execute(instruction* instruction, stations_table* stations_table) {
                 if(r_s->time > 0) {
                     r_s->time--;
                 } else {
-                    write_result(r_s, stations_table);
+                    write_result(r_s, stations_table, buffers_table);
                 }
             }
         }
     }
 }
 
-void write_result(reservation_station* reservation_station, stations_table* stations_table) {
+void write_result(reservation_station* reservation_station, stations_table* stations_table, buffers_table* buffers_table) {
     instruction* instruction = reservation_station->op;
 
-    instruction->pending = NULL;
+    instruction->pending_station = NULL;
     instruction->rs->fu = NULL;
 
     if(strcmp(instruction->opcode, "add")) {

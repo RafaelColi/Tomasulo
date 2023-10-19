@@ -2,12 +2,12 @@
 #include <stdio.h>
 #include <instruction_queue.h>
 
-instruction_queue* create_instruction_queue(int num) {
+instruction_queue* create_instruction_queue(int size) {
     instruction_queue* new = (instruction_queue*) calloc(1, sizeof(instruction_queue));
 
     if(new != NULL) {
-        new->instructions = (instruction**) calloc(num, sizeof(instruction*));
-        new->size = num;
+        new->instructions = (instruction**) calloc(size, sizeof(instruction*));
+        new->cap = size;
     }
 
     return new;
