@@ -1,5 +1,6 @@
 #ifndef REGISTER.H
 #define REGISTER.H
+#include "reservation_station.h"
 
 typedef struct register_ {
     double value;

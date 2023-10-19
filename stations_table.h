@@ -16,4 +16,6 @@ int stations_table_is_full(stations_table* stations_table);
 
 int stations_table_is_empty(stations_table* stations_table);
 
+void refresh_stations_table(stations_table* stations_table);
+
 #endif

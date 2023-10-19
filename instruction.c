@@ -7,10 +7,7 @@ instruction* create_instruction() {
 
 }
 
-#include <stdlib.h>
-#include <stdio.h>
-
-void add(instruction* instruction) {
+void add_operation(instruction* instruction) {
     if(instruction == NULL) {
         printf("Null instruction");
         return;
@@ -19,7 +16,7 @@ void add(instruction* instruction) {
     instruction->rs->value = instruction->rt->value + instruction->rd->value;
 }
 
-void sub(instruction* instruction) {
+void sub_operation(instruction* instruction) {
     if(instruction == NULL) {
         printf("Null instruction");
         return;
@@ -28,7 +25,7 @@ void sub(instruction* instruction) {
     instruction->rs->value = instruction->rt->value - instruction->rd->value;
 }
 
-void mult(instruction* instruction) {
+void mult_operation(instruction* instruction) {
     if(instruction == NULL) {
         printf("Null instruction");
         return;
@@ -37,7 +34,7 @@ void mult(instruction* instruction) {
     instruction->rs->value = instruction->rt->value * instruction->rd->value;
 }
 
-void div(instruction* instruction) {
+void div_operation(instruction* instruction) {
     if(instruction == NULL) {
         printf("Null instruction");
         return;

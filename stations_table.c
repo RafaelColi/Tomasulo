@@ -59,3 +59,13 @@ int stations_table_is_empty(stations_table* stations_table) {
 
     return 0;
 }
+
+void refresh_stations_table(stations_table* stations_table) {
+    for(int i = 0; i < stations_table->size; i++) {
+        if(stations_table->stations[i]->busy == 'y') {
+            refresh_reservation_station(stations_table->stations[i]);
+        }
+    }
+
+    return;
+}

@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "reservation_station.h"
+#include <string.h>
 
 reservation_station* create_reservation_station(char* name) {
     reservation_station* new = (reservation_station*) calloc(1, sizeof(reservation_station));
@@ -18,14 +19,13 @@ void add_instruction_to_reservation_station(reservation_station* reservation_sta
     reservation_station->busy = 'y';
     reservation_station->op = instruction;
     
-    if(instruction->opcode == "add" || instruction->opcode == "sub") {
+    if(strcmp(instruction->opcode, "add") || strcmp(instruction->opcode, "sub")) {
         reservation_station->time = 2;
-    } else if(instruction->opcode == "mult") {
+    } else if(strcmp(instruction->opcode, "mult")) {
         reservation_station->time = 10;
-    } else if(instruction->opcode == "div") {
+    } else if(strcmp(instruction->opcode, "div")) {
         reservation_station->time = 40;
     }
-
 
     if(instruction->rs->fu == NULL) {
         instruction->rs->fu = reservation_station;
@@ -42,6 +42,8 @@ void add_instruction_to_reservation_station(reservation_station* reservation_sta
     } else {
         reservation_station->qk = instruction->rd;
     }
+
+    instruction->pending = reservation_station;
 
     return;
 }
