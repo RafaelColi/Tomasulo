@@ -27,34 +27,34 @@ void add_instruction_to_reservation_station(reservation_station* reservation_sta
         reservation_station->time = 40;
     }
 
-    if(instruction->rs->fu == NULL) {
-        instruction->rs->fu = reservation_station;
+    if(instruction->rs->r_s_fu == NULL || instruction->rs->l_b_fu == NULL) {
+        instruction->rs->r_s_fu = reservation_station;
     }
 
-    if(instruction->rt->fu == NULL) {
+    if(instruction->rt->r_s_fu == NULL || instruction->rt->l_b_fu == NULL) {
         reservation_station->vj = instruction->rt;
     } else {
         reservation_station->qj = instruction->rt;
     }
 
-    if(instruction->rd->fu == NULL) {
+    if(instruction->rd->r_s_fu == NULL || instruction->rd->l_b_fu == NULL) {
         reservation_station->vk = instruction->rd;
     } else {
         reservation_station->qk = instruction->rd;
     }
-
+    
     instruction->pending_station = reservation_station;
 
     return;
 }
 
 void refresh_reservation_station(reservation_station* reservation_station) {
-    if(reservation_station->qj->fu == NULL) {
+    if(reservation_station->qj->r_s_fu == NULL) {
         reservation_station->vj = reservation_station->qj;
         reservation_station->qj = NULL;
     }
 
-    if(reservation_station->qk->fu == NULL) {
+    if(reservation_station->qk->r_s_fu == NULL) {
         reservation_station->vk = reservation_station->qk;
         reservation_station->qk = NULL;
     }

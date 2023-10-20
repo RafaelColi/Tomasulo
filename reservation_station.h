@@ -2,6 +2,7 @@
 #define RESERVATION_STATION.H
 #include "instruction.h"
 #include "register.h"
+#include "stations_table.h"
 
 typedef struct reservation_station {
     int time;
@@ -12,6 +13,7 @@ typedef struct reservation_station {
     register_* vk;
     register_* qj;
     register_* qk;
+    stations_table* stations_table;
 
 } reservation_station;
 

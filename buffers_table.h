@@ -14,4 +14,6 @@ int buffers_table_is_full(buffers_table* buffers_table);
 
 int buffers_table_is_empty(buffers_table* buffers_table);
 
+void refresh_buffers_table(buffers_table* buffers_table);
+
 #endif

@@ -33,15 +33,21 @@ void issue(instruction_queue* instruction_queue, stations_table* stations_table,
             }
         }
     }
+
+    execute(stations_table, buffers_table);
 }
 
-void execute(instruction* instruction, stations_table* stations_table, buffers_table* buffers_table) {
+void execute(stations_table* stations_table, buffers_table* buffers_table) {
     for(int i = 0; i < buffers_table->buffers; i++) {
         load_buffer* l_b = buffers_table->buffers[i];
 
         if(l_b->busy == 'y') {
-            if(l_b->time > 0) {
-                l_b->time--;
+            if(l_b->target->l_b_fu == NULL && l_b->target->r_s_fu == NULL) {
+                if(l_b->time > 0) {
+                    l_b->time--;
+                } else {
+                    write_result(l_b->op);
+                }
             }
         }
     }
@@ -55,37 +61,52 @@ void execute(instruction* instruction, stations_table* stations_table, buffers_t
                 if(r_s->time > 0) {
                     r_s->time--;
                 } else {
-                    write_result(r_s, stations_table, buffers_table);
+                    write_result(r_s->op);
                 }
             }
         }
     }
 }
 
-void write_result(reservation_station* reservation_station, stations_table* stations_table, buffers_table* buffers_table) {
-    instruction* instruction = reservation_station->op;
+void write_result(instruction* instruction) {
+    if(strcmp(instruction->opcode, "load")) {
+        load_buffer* load_buffer = instruction->pending_buffer;
 
-    instruction->pending_station = NULL;
-    instruction->rs->fu = NULL;
+        instruction->pending_buffer = NULL;
+        instruction->rs->l_b_fu = NULL;
 
-    if(strcmp(instruction->opcode, "add")) {
-        add_operation(instruction);
-    } else if(strcmp(instruction->opcode, "sub")) {
-        sub_operation(instruction);
-    } else if(strcmp(instruction->opcode, "mult")) {
-        mult_operation(instruction);
-    } else if(strcmp(instruction->opcode, "div")) {
-        div_operation(instruction);
+        load_operation(instruction);
+
+        load_buffer->busy = 'n';
+        load_buffer->address = NULL;
+        load_buffer->op = NULL;
+        load_buffer->target = NULL;
+
+        refresh_buffers_table(load_buffer->buffers_table);
+    } else {
+        reservation_station* reservation_station = instruction->pending_station;
+        instruction->pending_station = NULL;
+        instruction->rs->r_s_fu = NULL;
+
+        if(strcmp(instruction->opcode, "add")) {
+            add_operation(instruction);
+        } else if(strcmp(instruction->opcode, "sub")) {
+            sub_operation(instruction);
+        } else if(strcmp(instruction->opcode, "mult")) {
+            mult_operation(instruction);
+        } else if(strcmp(instruction->opcode, "div")) {
+            div_operation(instruction);
+        }
+        
+        reservation_station->busy = 'n';
+        reservation_station->op = NULL;
+        reservation_station->qj = NULL;
+        reservation_station->qk = NULL;
+        reservation_station->vj = NULL;
+        reservation_station->vk = NULL;
+
+        refresh_stations_table(reservation_station->stations_table);
     }
-    
-    reservation_station->busy = 'n';
-    reservation_station->op = NULL;
-    reservation_station->qj = NULL;
-    reservation_station->qk = NULL;
-    reservation_station->vj = NULL;
-    reservation_station->vk = NULL;
-
-    refresh_stations_table(stations_table);
 }
 
 int main() {

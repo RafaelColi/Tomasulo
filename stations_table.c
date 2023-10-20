@@ -38,6 +38,7 @@ void add_reservation_station(stations_table* stations_table, reservation_station
         return;
     }
 
+    reservation_station->stations_table = stations_table;
     stations_table->stations[stations_table->size];
     stations_table->size++;
 

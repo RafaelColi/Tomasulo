@@ -42,6 +42,6 @@ void div_operation(instruction* instruction) {
     instruction->rs->value = instruction->rt->value / instruction->rd->value;
 }
 
-void load() {
+void load_operation(instruction* instruction) {
 
 }

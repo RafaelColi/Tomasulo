@@ -19,6 +19,7 @@ void add_buffers_to_buffers_table(load_buffer* load_buffer, buffers_table* buffe
         return;
     }
 
+    load_buffer->buffers_table = buffers_table;
     buffers_table->buffers[buffers_table->size] = load_buffer;
     buffers_table->size++;
 
@@ -42,3 +43,10 @@ int buffers_table_is_empty(buffers_table* buffers_table) {
     return 1;
 }
 
+void refresh_buffers_table(buffers_table* buffers_table) {
+    for(int i = 0; i < buffers_table->size; i++) {
+        if(buffers_table->buffers[i]->busy == 'y') {
+            refresh_load_buffer(buffers_table->buffers[i]);
+        }
+    }
+}

@@ -13,11 +13,20 @@ load_buffer* create_load_buffer() {
 }
 
 void add_instruction_to_load_buffer(load_buffer* load_buffer, instruction* instruction) {
+    load_buffer->op = instruction;
+    load_buffer->target = instruction->rs;
     load_buffer->address = instruction->rt;
     load_buffer->busy = 'y';
     load_buffer->time = 2;
-    
+
     instruction->pending_buffer = load_buffer;
+    instruction->rs->l_b_fu = load_buffer;
 
     return;
+}
+
+void refresh_load_buffer(load_buffer* load_buffer) {
+    instruction* instruction = load_buffer->op;
+
+    instruction->rs->l_b_fu = NULL;
 }

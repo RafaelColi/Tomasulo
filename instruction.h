@@ -24,5 +24,6 @@ void mult_operation(instruction* instruction);
 
 void div_operation(instruction* instruction);
 
-void load();
+void load_operation(instruction* instruction);
+
 #endif
