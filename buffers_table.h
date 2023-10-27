@@ -1,12 +1,10 @@
-#ifndef BUFFER_TABLE.H
-#define BUFFER_TABLE.H
+#ifndef BUFFERS_TABLE_H
+#define BUFFERS_TABLE_H
 #include "load_buffer.h"
 
-typedef struct buffers_table {
-    load_buffer** buffers;
-    int size;
-    int cap;
-} buffers_table;
+typedef struct buffers_table buffers_table;
+
+buffers_table* create_buffers_table(int size);
 
 void add_buffers_to_buffers_table(load_buffer* load_buffer, buffers_table* buffers_table);
 

@@ -2,6 +2,16 @@
 #include <stdio.h>
 #include "load_buffer.h"
 
+typedef struct load_buffer {
+    char busy;
+    register_* target;
+    register_* address;
+    int time;
+    instruction* op;
+    buffers_table* buffers_table;
+
+} load_buffer;
+
 load_buffer* create_load_buffer() {
     load_buffer* new = (load_buffer*) calloc(1, sizeof(load_buffer));
 
@@ -24,6 +34,16 @@ void add_instruction_to_load_buffer(load_buffer* load_buffer, instruction* instr
 
     return;
 }
+
+void clear_load_buffer(load_buffer* load_buffer) {
+    load_buffer->busy = 'n';
+    load_buffer->address = NULL;
+    load_buffer->op = NULL;
+    load_buffer->target = NULL;
+
+    return;
+}
+
 
 void refresh_load_buffer(load_buffer* load_buffer) {
     instruction* instruction = load_buffer->op;

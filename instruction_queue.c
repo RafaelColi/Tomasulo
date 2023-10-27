@@ -1,6 +1,12 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <instruction_queue.h>
+#include "instruction_queue.h"
+
+typedef struct instruction_queue {
+    instruction** instructions;
+    int size;
+    int cap;
+} instruction_queue;
 
 instruction_queue* create_instruction_queue(int size) {
     instruction_queue* new = (instruction_queue*) calloc(1, sizeof(instruction_queue));

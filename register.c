@@ -2,6 +2,19 @@
 #include <stdio.h>
 #include "register.h"
 
+typedef struct register_ {
+    char* id;
+    double value;
+    reservation_station* r_s_fu;
+    load_buffer* l_b_fu;
+} register_;
+
+typedef struct register_pool {
+    register_** registers;
+    int size;
+    int cap;
+} register_pool;
+
 register_pool* create_register_pool(int size) {
     register_pool* new = (register_pool*) calloc(1, sizeof(register_pool));
 
@@ -16,8 +29,12 @@ register_pool* create_register_pool(int size) {
     }
 }
 
-register_* create_register() {
+register_* create_register(char* id) {
     register_* new = (register_*) calloc(1, sizeof(register_));
+
+    if(new != NULL) {
+        new->id = id;
+    }
 
     return new;
 }

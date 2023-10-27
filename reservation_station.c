@@ -1,7 +1,20 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "reservation_station.h"
 #include <string.h>
+#include "reservation_station.h"
+
+typedef struct reservation_station {
+    int time;
+    char* name;
+    char busy;
+    instruction* op;
+    register_* vj;
+    register_* vk;
+    register_* qj;
+    register_* qk;
+    stations_table* stations_table;
+
+} reservation_station;
 
 reservation_station* create_reservation_station(char* name) {
     reservation_station* new = (reservation_station*) calloc(1, sizeof(reservation_station));
@@ -58,4 +71,15 @@ void refresh_reservation_station(reservation_station* reservation_station) {
         reservation_station->vk = reservation_station->qk;
         reservation_station->qk = NULL;
     }
+}
+
+void clear_reservation_station(reservation_station* reservation_station) {
+    reservation_station->busy = 'n';
+    reservation_station->op = NULL;
+    reservation_station->qj = NULL;
+    reservation_station->qk = NULL;
+    reservation_station->vj = NULL;
+    reservation_station->vk = NULL;
+
+    return;
 }

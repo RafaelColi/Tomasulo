@@ -2,11 +2,23 @@
 #include <stdio.h>
 #include "buffers_table.h"
 
+typedef struct buffers_table {
+    load_buffer** buffers;
+    int size;
+    int cap;
+} buffers_table;
+
 buffers_table* create_buffers_table(int size) {
     buffers_table* new = (buffers_table*) calloc(1, sizeof(buffers_table));
 
     if(new != NULL) {
         new->buffers = (load_buffer**) calloc(size, sizeof(load_buffer*));
+
+        if(new->buffers != NULL) {
+            for(int i = 0; i < size; i++) {
+                new->buffers[i] = create_load_buffer();
+            }
+        }
         new->cap = size;
     }
 
