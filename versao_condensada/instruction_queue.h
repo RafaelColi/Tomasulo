@@ -1,8 +1,12 @@
 #ifndef INSTRUCTION_QUEUE_H
 #define INSTRUCTION_QUEUE_H
-#include "instruction.h"
+#include "instructions.h"
 
-typedef struct instruction_queue instruction_queue;
+typedef struct instruction_queue {
+    instruction** instructions;
+    int size;
+    int cap;
+} instruction_queue;
 
 instruction_queue* create_instruction_queue(int size);
 

@@ -1,7 +1,10 @@
 #ifndef CPU_H
 #define CPU_H
 
-typedef struct cpu cpu;
+typedef struct cpu {
+    int clock;
+    int finished;
+} cpu;
 
 cpu* create_cpu();
 

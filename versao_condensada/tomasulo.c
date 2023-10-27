@@ -1,14 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "reservation_station.h"
-#include "instruction.h"
-#include "instruction_queue.h"
-#include "stations_table.h"
-#include "register.h"
-#include "load_buffer.h"
-#include "buffers_table.h"
+
 #include "cpu.h"
+#include "instruction_queue.h"
+#include "instructions.h"
+#include "tables.h"
 
 void write_result(instruction* instruction, cpu* cpu) {
     if(strcmp(instruction->opcode, "load")) {

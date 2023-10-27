@@ -2,7 +2,11 @@
 #define BUFFERS_TABLE_H
 #include "load_buffer.h"
 
-typedef struct buffers_table buffers_table;
+typedef struct buffers_table {
+    load_buffer** buffers;
+    int size;
+    int cap;
+} buffers_table;
 
 buffers_table* create_buffers_table(int size);
 

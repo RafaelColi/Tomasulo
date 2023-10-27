@@ -1,20 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
-#include "instruction.h"
-
-typedef struct instruction{
-    char* opcode;
-    register_* rs;
-    register_* rt;
-    register_* rd;
-    reservation_station* pending_station;
-    load_buffer* pending_buffer;
-    int issued;
-    int executed;
-    int finished;
-
-} instruction;
+#include "instructions.h"
 
 instruction* create_instruction(char* opcode, char* rs, char* rt, char* rd, register_pool* r_p) {
     instruction* new = (instruction*) calloc(1, sizeof(instruction));
@@ -82,5 +68,62 @@ void div_operation(instruction* instruction) {
 }
 
 void load_operation(instruction* instruction) {
+    if(instruction == NULL) {
+        printf("Null instruction");
+        return;
+    }
 
+    instruction->rs->value = instruction->rt->value;
+}
+
+register_pool* create_register_pool(int size) {
+    register_pool* new = (register_pool*) calloc(1, sizeof(register_pool));
+
+    if(new != NULL) {
+        new->registers = (register_**) calloc(size, sizeof(register_*));
+
+        if(new->registers == NULL) {
+            return NULL;
+        }
+
+        new->size = size;
+    }
+}
+
+register_* create_register(char* id) {
+    register_* new = (register_*) calloc(1, sizeof(register_));
+
+    if(new != NULL) {
+        new->id = id;
+    }
+
+    return new;
+}
+
+void add_register_to_pool(register_pool* register_pool, register_* reg) {
+    if(register_pool_is_full(register_pool)) {
+        printf("Register pool is full\n");
+        return;
+    }
+
+    register_pool->registers[register_pool->size] = reg;
+    register_pool->size++;
+
+    return;
+}
+
+int register_pool_is_full(register_pool* stations_table) {
+    if(stations_table->size == stations_table->cap) {
+        return 1;
+    }
+
+    return 0;
+}
+
+int register_pool_is_empty(register_pool* stations_table) {
+    if(stations_table->size == 0) {
+        return 1;
+    }
+
+    return 0;
 }

@@ -2,7 +2,11 @@
 #define STATIONS_TABLE_H
 #include "reservation_station.h"
 
-typedef struct stations_table stations_table;
+typedef struct stations_table {
+    reservation_station** stations;
+    int size;
+    int cap;
+} stations_table;
 
 stations_table* create_stations_table(int add, int mult);
 

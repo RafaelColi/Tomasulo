@@ -4,7 +4,19 @@
 #include "register.h"
 #include "stations_table.h"
 
-typedef struct reservation_station reservation_station;
+typedef struct reservation_station {
+    int time;
+    char* name;
+    char busy;
+    instruction* op;
+    register_* vj;
+    register_* vk;
+    register_* qj;
+    register_* qk;
+    stations_table* stations_table;
+
+} reservation_station;
+
 
 reservation_station* create_reservation_station(char* name);
 

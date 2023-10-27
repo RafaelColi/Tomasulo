@@ -2,19 +2,9 @@
 #include <stdio.h>
 #include <string.h>
 #include "reservation_station.h"
-
-typedef struct reservation_station {
-    int time;
-    char* name;
-    char busy;
-    instruction* op;
-    register_* vj;
-    register_* vk;
-    register_* qj;
-    register_* qk;
-    stations_table* stations_table;
-
-} reservation_station;
+#include "instruction.h"
+#include "register.h"
+#include "stations_table.h"
 
 reservation_station* create_reservation_station(char* name) {
     reservation_station* new = (reservation_station*) calloc(1, sizeof(reservation_station));
