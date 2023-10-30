@@ -156,6 +156,7 @@ int main() {
     add_register_to_pool(reg_pool, f0);
     add_register_to_pool(reg_pool, f2);
     add_register_to_pool(reg_pool, f4);
+    add_register_to_pool(reg_pool, f6);
     add_register_to_pool(reg_pool, f8);
     add_register_to_pool(reg_pool, f10);
     add_register_to_pool(reg_pool, f12);
