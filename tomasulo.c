@@ -126,10 +126,9 @@ void tomasulo(instruction_queue* instruction_queue, stations_table* stations_tab
 }
 
 int main() {
-    
     int n_registers = 16;
     int n_instructions = 6;
-
+    
     registers_pool* reg_pool = create_register_pool(n_registers);
     instruction_queue* inst_q = create_instruction_queue(n_instructions);
     instruction_queue* instructions = create_instruction_queue(n_instructions);
@@ -181,19 +180,19 @@ int main() {
     common_data_bus* cdb = create_common_data_bus(reg_pool);
 
 
-    instruction* i1 = create_instruction("load", f6, f30, NULL, reg_pool);
+    /*instruction* i1 = create_instruction("load", f6, f30, NULL, reg_pool);
     instruction* i2 = create_instruction("load", f2, f28, NULL, reg_pool);
     instruction* i3 = create_instruction("mult", f0, f2, f4, reg_pool);
     instruction* i4 = create_instruction("sub", f8, f2, f6, reg_pool);
     instruction* i5 = create_instruction("div", f10, f0, f6, reg_pool);
-    instruction* i6 = create_instruction("add", f6, f8, f2, reg_pool);
+    instruction* i6 = create_instruction("add", f6, f8, f2, reg_pool);*/
 
-    /*instruction* i1 = create_instruction("load", "f6", "f30", "", reg_pool);
+    instruction* i1 = create_instruction("load", "f6", "f30", "", reg_pool);
     instruction* i2 = create_instruction("load", "f2", "f28", "", reg_pool);
     instruction* i3 = create_instruction("mult", "f0", "f2", "f4", reg_pool);
     instruction* i4 = create_instruction("sub", "f8", "f2", "f6", reg_pool);
     instruction* i5 = create_instruction("div", "f10", "f0", "f6", reg_pool);
-    instruction* i6 = create_instruction("add", "f6", "f8", "f2", reg_pool);*/
+    instruction* i6 = create_instruction("add", "f6", "f8", "f2", reg_pool);
 
     add_instruction_into_queue(i1, inst_q);
     add_instruction_into_queue(i2, inst_q);
