@@ -25,8 +25,8 @@ void testar_igualdade(teste* teste, char* nome) {
 }
 
 int main() {
-    teste* t1 = criar_teste("rafael");
-    char* nome = "rafael";
+    teste* t1 = criar_teste("lucas");
+    char* nome = "lucas";
     testar_igualdade(t1, nome);
 
     return 0;
