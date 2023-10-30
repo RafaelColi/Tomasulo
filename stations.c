@@ -18,6 +18,16 @@ reservation_station* create_reservation_station(char* name) {
 }
 
 void refresh_reservation_station(reservation_station* reservation_station, common_data_bus* cdb) {
+    if(reservation_station == NULL) {
+        printf("NULL pointer to reservation station\nrefresh_reservation_station() cancelled\n");
+        return;
+    }
+
+    if(cdb == NULL) {
+        printf("NULL pointer to common data bus\nrefresh_reservation_station() cancelled\n");
+        return;
+    }
+    
     if(register_is_available(reservation_station->qj, cdb)) {
         reservation_station->vj = reservation_station->qj;
         reservation_station->qj = NULL;
@@ -32,6 +42,16 @@ void refresh_reservation_station(reservation_station* reservation_station, commo
 }
 
 void clear_reservation_station(reservation_station* reservation_station, common_data_bus* cdb) {
+    if(reservation_station == NULL) {
+        printf("NULL pointer to reservation station\nclear_reservation_station() cancelled\n");
+        return;
+    }
+
+    if(cdb == NULL) {
+        printf("NULL pointer to common data bus\nclear_reservation_station() cancelled\n");
+        return;
+    }
+    
     clear_common_data_bus(reservation_station->instruction, cdb);
 
     reservation_station->instruction = NULL;
@@ -47,14 +67,27 @@ void clear_reservation_station(reservation_station* reservation_station, common_
 load_buffer* create_load_buffer() {
     load_buffer* new = (load_buffer*) calloc(1, sizeof(load_buffer));
 
-    if(new != NULL) {
-        new->busy = 'n';
+    if(new == NULL) {
+        printf("Failed to allocate memory for load buffer\n");
+        return NULL;
     }
+
+    new->busy = 'n';
 
     return new;
 }
 
 void clear_load_buffer(load_buffer* load_buffer, common_data_bus* cdb) {
+    if(load_buffer == NULL) {
+        printf("NULL pointer to load buffer\nclear_load_buffer() cancelled\n");
+        return;
+    }
+
+    if(cdb == NULL) {
+        printf("NULL pointer to common data bus\nclear_load_buffer() cancelled\n");
+        return;
+    }
+    
     clear_common_data_bus(load_buffer->instruction, cdb);
 
     load_buffer->instruction = NULL;
@@ -66,6 +99,21 @@ void clear_load_buffer(load_buffer* load_buffer, common_data_bus* cdb) {
 }
 
 void add_instruction_to_reservation_station(reservation_station* reservation_station, instruction* instruction, common_data_bus* cdb) {
+    if(reservation_station == NULL) {
+        printf("NULL pointer to reservation station\nadd_instruction_to_reservation_station() cancelled\n");
+        return;
+    }
+
+    if(instruction == NULL) {
+        printf("NULL pointer to instruction\nadd_instruction_to_reservation_station() cancelled\n");
+        return;
+    }
+
+    if(cdb == NULL) {
+        printf("NULL pointer to common data bus\nadd_instruction_to_reservation_station() cancelled\n");
+        return;
+    }
+    
     reservation_station->busy = 'y';
     
     if(!strcmp(instruction->opcode, "add") || !strcmp(instruction->opcode, "sub")) {
@@ -98,6 +146,20 @@ void add_instruction_to_reservation_station(reservation_station* reservation_sta
 }
 
 void add_instruction_to_load_buffer(load_buffer* load_buffer, instruction* instruction, common_data_bus* cdb) {
+    if(load_buffer == NULL) {
+        printf("NULL pointer to load buffer\nadd_instruction_to_load_buffer() cancelled\n");
+        return;
+    }
+
+    if(instruction == NULL) {
+        printf("NULL pointer to instruction\nadd_instruction_to_load_buffer() cancelled\n");
+        return;
+    }
+
+    if(cdb == NULL) {
+        printf("NULL pointer to common data bus\nadd_instruction_to_load_buffer() cancelled\n");
+        return;
+    }
 
     if(register_is_available(instruction->rs, cdb)) {
         write_cdb(instruction->rs, cdb, instruction);
@@ -412,4 +474,6 @@ void clear_common_data_bus(instruction* instruction, common_data_bus* cdb) {
             unit->instruction = NULL;
         }
     }
+
+    return;
 }
