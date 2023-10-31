@@ -23,14 +23,16 @@ instruction* create_instruction(char* opcode, char* rs, char* rt, char* rd, regi
             new->rs = r;
         }
 
-        if(!strcmp(r->id, rd)) {
-            new->rd = r;
-        }
-
         if(!strcmp(r->id, rt)) {
             new->rt = r;
         }
+
+        if(!strcmp(r->id, rd)) {
+            new->rd = r;
+        }
     }
+
+    new->opcode = opcode;
 
     new->issued = -1;
     new->executed = -1;

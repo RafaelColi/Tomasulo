@@ -5,7 +5,7 @@
 cpu* create_cpu() {
     cpu* new = (cpu*) calloc(1, sizeof(cpu));
 
-    if(new = NULL) {
+    if(new == NULL) {
         printf("Failed to allocate memory for cpu");
         return NULL;
     }
@@ -18,7 +18,7 @@ void next_clock(cpu* cpu) {
         printf("NULL pointer to cpu\nnext_clock() cancelled\n");
         return;
     }
-    
+
     cpu->clock++;
 
     return;

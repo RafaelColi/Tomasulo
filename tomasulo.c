@@ -36,21 +36,23 @@ void execute(stations_table* stations_table, buffers_table* buffers_table, cpu* 
         load_buffer* l_b = buffers_table->buffers[i];
 
         if(l_b->busy == 'y') {
-            if(register_is_available(l_b->target, cdb) && register_is_available(l_b->address, cdb)) {
+            if((register_is_available(l_b->target, cdb) && register_is_available(l_b->address, cdb)) ||
+            (register_busy_with_instruction(l_b->target, l_b->instruction, cdb) && register_busy_with_instruction(l_b->address, l_b->instruction, cdb))) {
                 if(l_b->time > 0) {
                         
                     if(l_b->instruction->executed == -1) {
                         l_b->instruction->executed = cpu->clock;
                     }
-                        
-                    }
+                    
                     l_b->time--;
                 } else {
                     write_result(stations_table, buffers_table, l_b->instruction, cpu, cdb);
                     clear_load_buffer(l_b, cdb);
+                    refresh_stations_table(stations_table, cdb);
                 }
             }
         }
+    }
     
     for(int i = 0; i < stations_table->size; i++) {
         reservation_station* r_s = stations_table->stations[i];
@@ -84,6 +86,7 @@ void issue(instruction_queue* instruction_queue, stations_table* stations_table,
 
             if(l_b->busy == 'n') {
                 add_instruction_to_load_buffer(l_b, instruction, cdb);
+                break;
             }
         }
     }
@@ -95,12 +98,13 @@ void issue(instruction_queue* instruction_queue, stations_table* stations_table,
         (!strcmp(instruction->opcode, "mult") && !strcmp(r_s->name, "mult")) || (!strcmp(instruction->opcode, "div") && !strcmp(r_s->name, "mult"))) {
             if(r_s->busy == 'n') {
                 add_instruction_to_reservation_station(r_s, instruction, cdb);
-                remove_instruction_from_queue(instruction_queue);
+                break;
             }
         }
     }
 
     instruction->issued = cpu->clock;
+    remove_instruction_from_queue(instruction_queue);
 
     execute(stations_table, buffers_table, cpu, cdb);
 
@@ -136,7 +140,7 @@ int main() {
     buffers_table* b_t = create_buffers_table(3);
     cpu* cpu = create_cpu();
 
-    reg* f0 = create_register("f0");
+    /*reg* f0 = create_register("f0");
     reg* f2 = create_register("f2");
     reg* f4 = create_register("f4");
     reg* f6 = create_register("f6");
@@ -168,16 +172,14 @@ int main() {
     add_register_to_pool(reg_pool, f24);
     add_register_to_pool(reg_pool, f26);
     add_register_to_pool(reg_pool, f28);
-    add_register_to_pool(reg_pool, f30);
+    add_register_to_pool(reg_pool, f30);*/
 
-    /*for(int i = 0; i < n_registers; i++) {
+    for(int i = 0; i < n_registers; i++) {
         char* id = (char*) calloc(4, sizeof(char));
         sprintf(id, "f%d", (i * 2));
-        printf("passou");
         add_register_to_pool(reg_pool, create_register(id));
-    }*/
+    }
 
-    printf("passou");
     common_data_bus* cdb = create_common_data_bus(reg_pool);
 
 
@@ -194,7 +196,8 @@ int main() {
     instruction* i4 = create_instruction("sub", "f8", "f2", "f6", reg_pool);
     instruction* i5 = create_instruction("div", "f10", "f0", "f6", reg_pool);
     instruction* i6 = create_instruction("add", "f6", "f8", "f2", reg_pool);
-
+    
+    
     add_instruction_into_queue(i1, inst_q);
     add_instruction_into_queue(i2, inst_q);
     add_instruction_into_queue(i3, inst_q);
@@ -211,14 +214,16 @@ int main() {
     for(int i = 0; i < instructions->size; i++) {
         instruction* instruction = instructions->instructions[i];
 
-        printf("Instruction %d -> Issued: %d, Executed: %d, Write Result: %d", i, instruction->issued, instruction->executed, instruction->finished);
+        printf("Instruction %d -> Issued: %d, Executed: %d, Write Result: %d\n", i, instruction->issued, instruction->executed, instruction->finished);
     }
+
+    printf("\n\n");
 
     for(int i = 0; i < reg_pool->size; i++) {
         reg* reg = reg_pool->registers[i];
 
         if(reg != NULL) {
-            printf("Register %s -> Value: %f", reg->id, reg->value);
+            printf("Register %s -> Value: %f\n", reg->id, reg->value);
         }
     }
 

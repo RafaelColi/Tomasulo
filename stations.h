@@ -85,6 +85,8 @@ common_data_bus* create_common_data_bus(registers_pool* reg_pool);
 
 int register_is_available(reg* reg, common_data_bus* cdb);
 
+int register_busy_with_instruction(reg* reg, instruction* instruction, common_data_bus* cdb);
+
 void write_cdb(reg* reg, common_data_bus* cdb, instruction* instruction);
 
 void clear_common_data_bus(instruction* instruction, common_data_bus* cdb);

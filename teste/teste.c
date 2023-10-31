@@ -25,9 +25,14 @@ void testar_igualdade(teste* teste, char* nome) {
 }
 
 int main() {
-    teste* t1 = criar_teste("lucas");
-    char* nome = "lucas";
-    testar_igualdade(t1, nome);
+    teste* t1;
+    for(int i = 0; i < 2; i++) {
+        char* id = (char*) calloc(4, sizeof(char));
+        sprintf(id, "f%d", (i * 2));
+        t1 = criar_teste(id);
+    }
+
+    testar_igualdade(t1, "f2");
 
     return 0;
 }

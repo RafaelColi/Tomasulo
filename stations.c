@@ -165,10 +165,15 @@ void add_instruction_to_load_buffer(load_buffer* load_buffer, instruction* instr
         write_cdb(instruction->rs, cdb, instruction);
     }  
 
+    if(register_is_available(instruction->rt, cdb)) {
+        write_cdb(instruction->rt, cdb, instruction);
+    }
+
     load_buffer->target = instruction->rs;
     load_buffer->address = instruction->rt;
     load_buffer->busy = 'y';
     load_buffer->time = 2;
+    load_buffer->instruction = instruction;
 
     return;
 }
@@ -291,7 +296,7 @@ buffers_table* create_buffers_table(int size) {
     new->cap = size;
 
     for(int i = 0; i < new->cap; i++) {
-        new->buffers[i] = create_load_buffer();
+        add_buffers_to_buffers_table(create_load_buffer(), new);
     }
 
     return new;
@@ -390,11 +395,45 @@ common_data_bus* create_common_data_bus(registers_pool* reg_pool) {
 
     for(int i = 0; i < size; i++) {
         new->units[i] = create_unit(reg_pool->registers[i]);
+        new->size++;
     }
 
     new->cap = size;
 
     return new;
+}
+
+int register_busy_with_instruction(reg* reg, instruction* instruction, common_data_bus* cdb) {
+    if(reg == NULL) {
+        printf("NULL pointer to register\nregister_busy_with_instruction() cancelled\n");
+        return -1;
+    }
+
+    if(instruction == NULL) {
+        printf("NULL pointer to instruction\nregister_busy_with_instruction() cancelled\n");
+        return -1;
+    }
+
+    if(cdb == NULL) {
+        printf("NULL pointer to common data bus\nregister_busy_with_instruction() cancelled\n");
+        return -1;
+    }
+
+    unit* unit;
+
+    for(int i = 0; i < cdb->size; i++) {
+        unit = cdb->units[i];
+
+        if(unit->reg == reg) {
+            if(unit->instruction == instruction) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+    }
+
+    return 0;
 }
 
 int register_is_available(reg* reg, common_data_bus* cdb) {
@@ -448,6 +487,7 @@ void write_cdb(reg* reg, common_data_bus* cdb, instruction* instruction) {
 
         if(unit->reg == reg) {
             unit->instruction = instruction;
+            return;
         }
     }
 
