@@ -215,6 +215,8 @@ int main() {
 
     tomasulo(inst_q, s_t, b_t, cpu, cdb);
 
+    system("clear");
+
     for(int i = 0; i < instructions->size; i++) {
         instruction* instruction = instructions->instructions[i];
 

@@ -28,12 +28,12 @@ void refresh_reservation_station(reservation_station* reservation_station, commo
         return;
     }
     
-    if(register_is_available(reservation_station->qj, cdb)) {
+    if(reservation_station->qj != NULL && register_is_available(reservation_station->qj, cdb)) {
         reservation_station->vj = reservation_station->qj;
         reservation_station->qj = NULL;
     }
 
-    if(register_is_available(reservation_station->qk, cdb)) {
+    if(reservation_station->qk != NULL && register_is_available(reservation_station->qk, cdb)) {
         reservation_station->vk = reservation_station->qk;
         reservation_station->qk = NULL;
     }
