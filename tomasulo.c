@@ -25,7 +25,7 @@ void write_result(stations_table* stations_table, buffers_table* buffers_table, 
         }
     }
 
-    instruction->finished = cpu->clock;
+    instruction->finished = cpu->clock + 1;
     cpu->finished++;
 
     return;
@@ -114,6 +114,8 @@ void issue(instruction_queue* instruction_queue, stations_table* stations_table,
 
 void tomasulo(instruction_queue* instruction_queue, stations_table* stations_table, buffers_table* buffers_table, cpu* cpu, common_data_bus* cdb) {
     int n_instructions = instruction_queue->size;
+
+    next_clock(cpu);
 
     while(cpu->finished < n_instructions) {
         if(!instruction_queue_is_empty(instruction_queue)) {
