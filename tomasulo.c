@@ -184,7 +184,9 @@ int main() {
 
     common_data_bus* cdb = create_common_data_bus(reg_pool);
 
-
+    reg_pool->registers[15]->value = 2;
+    reg_pool->registers[14]->value = 5;
+    reg_pool->registers[2]->value = 3;
     /*instruction* i1 = create_instruction("load", f6, f30, NULL, reg_pool);
     instruction* i2 = create_instruction("load", f2, f28, NULL, reg_pool);
     instruction* i3 = create_instruction("mult", f0, f2, f4, reg_pool);
