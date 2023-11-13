@@ -9,10 +9,13 @@ typedef struct instruction {
     reg* rd;
     int issued;
     int executed;
-    int finished; 
+    int finished;
+    double temp;
 } instruction;
 
 instruction* create_instruction(char* opcode, char* rs, char* rt, char* rd, registers_pool* r_p);
+
+void begin_operation(instruction* instruction);
 
 void add_operation(instruction* instruction);
 

@@ -41,13 +41,38 @@ instruction* create_instruction(char* opcode, char* rs, char* rt, char* rd, regi
     return new;
 }
 
+void begin_operation(instruction* instruction) {
+    if(instruction == NULL) {
+        printf("NULL pointer to instruction\nbegin_operation() cancelled");
+        return;
+    }
+
+    if(!strcmp(instruction->opcode, "load")) {
+        load_operation(instruction);
+
+    } else {
+        if(!strcmp(instruction->opcode, "add")) {
+            add_operation(instruction);
+        } else if(!strcmp(instruction->opcode, "sub")) {
+            sub_operation(instruction);
+        } else if(!strcmp(instruction->opcode, "mult")) {
+            mult_operation(instruction);
+        } else if(!strcmp(instruction->opcode, "div")) {
+            div_operation(instruction);
+        }
+    }
+
+    return;
+}
+
 void add_operation(instruction* instruction) {
     if(instruction == NULL) {
         printf("NULL pointer to instruction\nadd_operation() cancelled");
         return;
     }
 
-    instruction->rs->value = instruction->rt->value + instruction->rd->value;
+    instruction->temp = instruction->rt->value + instruction->rd->value;
+    printf("Ciclo %d -> %.2f + %.2f = %.2f\n", instruction->executed, instruction->rt->value, instruction->rd->value, instruction->temp);
 
     return;
 }
@@ -58,7 +83,8 @@ void sub_operation(instruction* instruction) {
         return;
     }
 
-    instruction->rs->value = instruction->rt->value - instruction->rd->value;
+    instruction->temp = instruction->rd->value - instruction->rt->value;
+    printf("Ciclo %d -> %.2f - %.2f = %.2f\n", instruction->executed, instruction->rd->value, instruction->rt->value, instruction->temp);
 
     return;
 }
@@ -69,7 +95,8 @@ void mult_operation(instruction* instruction) {
         return;
     }
 
-    instruction->rs->value = instruction->rt->value * instruction->rd->value;
+    instruction->temp = instruction->rt->value * instruction->rd->value;
+    printf("Ciclo %d -> %.2f * %.2f = %.2f\n", instruction->executed, instruction->rt->value, instruction->rd->value, instruction->temp);
 
     return;
 }
@@ -80,7 +107,8 @@ void div_operation(instruction* instruction) {
         return;
     }
 
-    instruction->rs->value = instruction->rt->value / instruction->rd->value;
+    instruction->temp = instruction->rt->value / instruction->rd->value;
+    printf("Ciclo %d -> %.2f / %.2f = %.2f\n", instruction->executed, instruction->rt->value, instruction->rd->value, instruction->temp);
 
     return;
 }
@@ -91,7 +119,7 @@ void load_operation(instruction* instruction) {
         return;
     }
 
-    instruction->rs->value = instruction->rt->value;
+    instruction->temp = instruction->rt->value;
 
     return;
 }

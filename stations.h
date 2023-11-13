@@ -12,6 +12,9 @@ typedef struct reservation_station {
     reg* vk;
     reg* qj;
     reg* qk;
+    double vj_value;
+    double vk_value;
+    double op_result;
 } reservation_station;
 
 typedef struct load_buffer {
@@ -20,6 +23,8 @@ typedef struct load_buffer {
     reg* address;
     instruction* instruction;
     int time;
+    double target_value;
+    double address_value;
 } load_buffer;
 
 typedef struct buffers_table {

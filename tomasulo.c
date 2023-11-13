@@ -8,24 +8,9 @@
 #include "stations.h"
 #include "register.h"
 
-
-void write_result(stations_table* stations_table, buffers_table* buffers_table, instruction* instruction, cpu* cpu, common_data_bus* cdb) {
-    if(!strcmp(instruction->opcode, "load")) {
-        load_operation(instruction);
-
-    } else {
-        if(!strcmp(instruction->opcode, "add")) {
-            add_operation(instruction);
-        } else if(!strcmp(instruction->opcode, "sub")) {
-            sub_operation(instruction);
-        } else if(!strcmp(instruction->opcode, "mult")) {
-            mult_operation(instruction);
-        } else if(!strcmp(instruction->opcode, "div")) {
-            div_operation(instruction);
-        }
-    }
-
+void write_result(instruction* instruction, cpu* cpu) {
     instruction->finished = cpu->clock + 1;
+    instruction->rs->value = instruction->temp;
     cpu->finished++;
 
     return;
@@ -42,11 +27,12 @@ void execute(stations_table* stations_table, buffers_table* buffers_table, cpu* 
                         
                     if(l_b->instruction->executed == -1) {
                         l_b->instruction->executed = cpu->clock;
+                        begin_operation(l_b->instruction);
                     }
                     
                     l_b->time--;
                 } else {
-                    write_result(stations_table, buffers_table, l_b->instruction, cpu, cdb);
+                    write_result(l_b->instruction, cpu);
                     clear_load_buffer(l_b, cdb);
                     refresh_stations_table(stations_table, cdb);
                 }
@@ -62,10 +48,12 @@ void execute(stations_table* stations_table, buffers_table* buffers_table, cpu* 
                 if(r_s->time > 0) {
                     if(r_s->instruction->executed == -1) {
                         r_s->instruction->executed = cpu->clock;
+                        begin_operation(r_s->instruction);
                     }
+
                     r_s->time--;
                 } else {
-                    write_result(stations_table, buffers_table, r_s->instruction, cpu, cdb);
+                    write_result(r_s->instruction, cpu);
                     clear_reservation_station(r_s, cdb);
                     refresh_stations_table(stations_table, cdb);
                 }
@@ -142,40 +130,6 @@ int main() {
     buffers_table* b_t = create_buffers_table(3);
     cpu* cpu = create_cpu();
 
-    /*reg* f0 = create_register("f0");
-    reg* f2 = create_register("f2");
-    reg* f4 = create_register("f4");
-    reg* f6 = create_register("f6");
-    reg* f8 = create_register("f8");
-    reg* f10 = create_register("f10");
-    reg* f12 = create_register("f12");
-    reg* f14 = create_register("f14");
-    reg* f16 = create_register("f16");
-    reg* f18 = create_register("f18");
-    reg* f20 = create_register("f20");
-    reg* f22 = create_register("f22");
-    reg* f24 = create_register("f24");
-    reg* f26 = create_register("f26");
-    reg* f28 = create_register("f28");
-    reg* f30 = create_register("f30");
-
-    add_register_to_pool(reg_pool, f0);
-    add_register_to_pool(reg_pool, f2);
-    add_register_to_pool(reg_pool, f4);
-    add_register_to_pool(reg_pool, f6);
-    add_register_to_pool(reg_pool, f8);
-    add_register_to_pool(reg_pool, f10);
-    add_register_to_pool(reg_pool, f12);
-    add_register_to_pool(reg_pool, f14);
-    add_register_to_pool(reg_pool, f16);
-    add_register_to_pool(reg_pool, f18);
-    add_register_to_pool(reg_pool, f20);
-    add_register_to_pool(reg_pool, f22);
-    add_register_to_pool(reg_pool, f24);
-    add_register_to_pool(reg_pool, f26);
-    add_register_to_pool(reg_pool, f28);
-    add_register_to_pool(reg_pool, f30);*/
-
     for(int i = 0; i < n_registers; i++) {
         char* id = (char*) calloc(4, sizeof(char));
         sprintf(id, "f%d", (i * 2));
@@ -184,20 +138,14 @@ int main() {
 
     common_data_bus* cdb = create_common_data_bus(reg_pool);
 
-    reg_pool->registers[15]->value = 2;
-    reg_pool->registers[14]->value = 5;
-    reg_pool->registers[2]->value = 3;
-    /*instruction* i1 = create_instruction("load", f6, f30, NULL, reg_pool);
-    instruction* i2 = create_instruction("load", f2, f28, NULL, reg_pool);
-    instruction* i3 = create_instruction("mult", f0, f2, f4, reg_pool);
-    instruction* i4 = create_instruction("sub", f8, f2, f6, reg_pool);
-    instruction* i5 = create_instruction("div", f10, f0, f6, reg_pool);
-    instruction* i6 = create_instruction("add", f6, f8, f2, reg_pool);*/
+    reg_pool->registers[15]->value = 2; /* Atribuindo valor inicial para o registrador f30 */
+    reg_pool->registers[14]->value = 5; /* Atribuindo valor inicial para o registrador f28 */
+    reg_pool->registers[2]->value = 3; /* Atribuindo valor inicial para o registrador f4 */
 
     instruction* i1 = create_instruction("load", "f6", "f30", "", reg_pool);
     instruction* i2 = create_instruction("load", "f2", "f28", "", reg_pool);
     instruction* i3 = create_instruction("mult", "f0", "f2", "f4", reg_pool);
-    instruction* i4 = create_instruction("sub", "f8", "f2", "f6", reg_pool);
+    instruction* i4 = create_instruction("sub", "f8", "f6", "f2", reg_pool);
     instruction* i5 = create_instruction("div", "f10", "f0", "f6", reg_pool);
     instruction* i6 = create_instruction("add", "f6", "f8", "f2", reg_pool);
     
@@ -215,7 +163,7 @@ int main() {
 
     tomasulo(inst_q, s_t, b_t, cpu, cdb);
 
-    system("clear");
+    //system("clear");
 
     for(int i = 0; i < instructions->size; i++) {
         instruction* instruction = instructions->instructions[i];

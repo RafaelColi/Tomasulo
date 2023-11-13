@@ -98,7 +98,7 @@ int instruction_queue_is_empty(instruction_queue* instruction_queue) {
     }
     
     if(instruction_queue->size == 0) {
-        printf("Instructions queue is empty\n");
+        //printf("Instructions queue is empty\n");
         return 1;
     }
 

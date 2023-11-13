@@ -30,11 +30,13 @@ void refresh_reservation_station(reservation_station* reservation_station, commo
     
     if(reservation_station->qj != NULL && register_is_available(reservation_station->qj, cdb)) {
         reservation_station->vj = reservation_station->qj;
+        reservation_station->vj_value = reservation_station->vj->value;
         reservation_station->qj = NULL;
     }
 
     if(reservation_station->qk != NULL && register_is_available(reservation_station->qk, cdb)) {
         reservation_station->vk = reservation_station->qk;
+        reservation_station->vk_value = reservation_station->vk->value;
         reservation_station->qk = NULL;
     }
 
@@ -130,12 +132,14 @@ void add_instruction_to_reservation_station(reservation_station* reservation_sta
 
     if(register_is_available(instruction->rt, cdb)) {
         reservation_station->vj = instruction->rt;
+        reservation_station->vj_value = instruction->rt->value;
     } else {
         reservation_station->qj = instruction->rt;
     }
 
     if(register_is_available(instruction->rd, cdb)) {
         reservation_station->vk = instruction->rd;
+        reservation_station->vk_value = instruction->rd->value;
     } else {
         reservation_station->qk = instruction->rd;
     }
